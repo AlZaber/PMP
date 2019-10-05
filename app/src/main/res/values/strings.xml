@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PMP</string>
+    <string name="title_activity_category">CategoryActivity</string>
+    <string name="title_activity_word_list">WordListActivity</string>
+</resources>

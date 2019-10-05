@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "498279268305",
+    "firebase_url": "https://pmp-english.firebaseio.com",
+    "project_id": "pmp-english",
+    "storage_bucket": "pmp-english.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498279268305:android:083bbce8deb8669a5d6af0",
+        "android_client_info": {
+          "package_name": "com.solvetech.pmp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498279268305-pt5oi8sr3anfunmeog6r92vp2kr8tuto.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solvetech.pmp",
+            "certificate_hash": "91f046d2e96c0bc11628571306654d652bcff1e2"
+          }
+        },
+        {
+          "client_id": "498279268305-a5l46v9qg2pfs8titr7h00qf4og6ev00.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaIa_ynX9SNq-C5UqM_KTf16SxXyHGMSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498279268305-a5l46v9qg2pfs8titr7h00qf4og6ev00.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
