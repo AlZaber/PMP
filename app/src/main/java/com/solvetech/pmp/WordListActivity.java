@@ -1,10 +1,13 @@
 package com.solvetech.pmp;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 
@@ -13,8 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
@@ -45,6 +50,7 @@ public class WordListActivity extends AppCompatActivity {
     private String category;
     private DatabaseReference ref;
     private StorageReference storageRef;
+    private static final int REQUEST_PERMISSION = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,7 @@ public class WordListActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        checkPermission();
         Intent i = getIntent();
         category = i.getStringExtra("category");
         ref = FirebaseDatabase.getInstance().getReference();
@@ -146,6 +153,61 @@ public class WordListActivity extends AppCompatActivity {
         request.setDestinationInExternalFilesDir(context, dst, filename + fileext);
 
         dmanager.enqueue(request);
+    }
+
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_DENIED
+            ) {
+                //permission denied
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_PERMISSION);
+            } else {
+                //permission already granted
+                haveFileList();
+            }
+        } else {
+            //system OS is < Marshmallow
+            haveFileList();
+        }
+    }
+
+    private void haveFileList() {
+        String path = Environment.getExternalStorageDirectory().toString()+"/Pictures";
+        Log.d("Files", "Path: " + path);
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+        Log.d("Files", "Size: "+ files.length);
+        for (int i = 0; i < files.length; i++) {
+            Log.d("Files", "FileName:" + files[i].getName());
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    haveFileList();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     ListView listView;
