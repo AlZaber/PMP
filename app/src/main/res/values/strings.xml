@@ -2,4 +2,6 @@
     <string name="app_name">PMP</string>
     <string name="title_activity_category">CategoryActivity</string>
     <string name="title_activity_word_list">WordListActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

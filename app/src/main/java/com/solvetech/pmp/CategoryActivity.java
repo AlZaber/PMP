@@ -37,6 +37,7 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Intensive English 1");
 
         ref = FirebaseDatabase.getInstance().getReference();
 
@@ -47,9 +48,9 @@ public class CategoryActivity extends AppCompatActivity {
                 Object o = listView.getItemAtPosition(position);
                 String str = (String)o; //As you are using Default String Adapter
                 Intent intent = new Intent(CategoryActivity.this, WordListActivity.class);
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 intent.putExtra("category", str);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -90,5 +91,12 @@ public class CategoryActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed()
+    {
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+    }
 }
