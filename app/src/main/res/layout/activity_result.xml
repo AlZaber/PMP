@@ -15,33 +15,63 @@
             android:id="@+id/seriallbl2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#10CEBD"
             android:gravity="bottom|right"
-            android:paddingTop="50dp"
-            android:paddingBottom="50dp"
-            android:text="Result"
+            android:paddingTop="30dp"
+            android:paddingBottom="30dp"
+            android:text="Score"
             android:textAlignment="center"
-            android:textColor="#272727"
-            android:textSize="36sp"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/retestbtn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="#E91E63"
-            android:minWidth="150dp"
-            android:minHeight="60dp"
-            android:text="Retake"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            tools:visibility="gone" />
+            android:background="#10CEBD"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/retestbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="30dp"
+                android:background="#E91E63"
+                android:minWidth="150dp"
+                android:minHeight="60dp"
+                android:text="Retake"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/congtxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Congratulation!"
+                android:textAlignment="center"
+                android:textColor="#0FE4AF"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                tools:visibility="gone" />
+        </LinearLayout>
 
         <ListView
             android:id="@+id/listView2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:background="#FFFFFF">
 
         </ListView>
 

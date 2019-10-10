@@ -28,6 +28,7 @@ import java.util.ArrayList;
 public class ResultActivity extends AppCompatActivity {
 
     TextView seriallbl;
+    TextView congtxt;
     ListView listView;
     ArrayList<String> words;
     ArrayList<String>  meanings;
@@ -36,7 +37,7 @@ public class ResultActivity extends AppCompatActivity {
     private ArrayList<Integer> ids;
     private SoundPool sounds;
 
-    int images =  R.drawable.ic_play;
+    int images =  R.drawable.ic_play_grey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +54,16 @@ public class ResultActivity extends AppCompatActivity {
 
         seriallbl = findViewById(R.id.seriallbl2);
         listView = findViewById(R.id.listView2);
+        congtxt = findViewById(R.id.congtxt);
         // now create an adapter class
         Button retake = findViewById(R.id.retestbtn);
+
+        congtxt.setVisibility(View.GONE);
         retake.setVisibility(View.GONE);
-        if(words.size() > 0){
+        if(words.size() > 0)
             retake.setVisibility(View.VISIBLE);
-        }
+        else
+            congtxt.setVisibility(View.VISIBLE);
         retake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,7 +78,7 @@ public class ResultActivity extends AppCompatActivity {
         final ResultAdapter adapter = new ResultAdapter(this, words, meanings, images);
         listView.setAdapter(adapter);
 
-        seriallbl.setText("Result :  " + (Integer.parseInt(total) - words.size()) + "/" + total);
+        seriallbl.setText("Score :  " + (Integer.parseInt(total) - words.size()) + "/" + total);
 
         String path = Environment.getExternalStorageDirectory().toString()+"/PMP-Audio/";
         for (String word : words ) {

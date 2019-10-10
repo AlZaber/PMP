@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -20,18 +21,19 @@
             android:layout_marginBottom="100dp"
             app:srcCompat="@drawable/pmp_s" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Downloading files"
-            android:textColor="#000000"
-            android:textSize="14sp" />
-
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="86dp"
             android:layout_height="73dp"
             app:srcCompat="@drawable/ic_download" />
+
+        <TextView
+            android:id="@+id/downtxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Downloading files"
+            android:textColor="#000000"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

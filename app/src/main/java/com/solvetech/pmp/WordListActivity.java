@@ -167,7 +167,7 @@ public class WordListActivity extends AppCompatActivity {
         finish();
     }
 
-    int images = R.drawable.ic_play;
+    int images = R.drawable.ic_play_grey;
     // so our images and other things are set in array
 
     // now paste some images in drawable

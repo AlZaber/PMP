@@ -2,14 +2,17 @@ package com.solvetech.pmp;
 
 import android.Manifest;
 import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -51,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
     private StorageReference storageRef;
     private ArrayList<String> audios;
     private static final int REQUEST_PERMISSION = 101;
+    private ArrayList<Long> ids;
+    private DownloadManager dmanager;
+
+    boolean checked = false;
+    int count = 0;
+    int downloaded = 0;
+    TextView downtxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ref = FirebaseDatabase.getInstance().getReference();
         storageRef = FirebaseStorage.getInstance().getReference();
+        ids = new ArrayList<>();
+        dmanager = (DownloadManager) getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
+        downtxt = findViewById(R.id.downtxt);
 
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -67,6 +80,22 @@ public class MainActivity extends AppCompatActivity {
         checkPermission();
 
         createSignInIntent();
+
+        BroadcastReceiver onComplete=new BroadcastReceiver() {
+            public void onReceive(Context ctxt, Intent intent) {
+                long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                if (ids.contains(id)) {
+                    ids.remove(id);
+                    downloaded++;
+                }
+                if(checked)
+                    downtxt.setText("Downloading files " + (downloaded) + "/"+ count);
+                if(ids.size() == 0){
+                    startProfileActivity(CategoryActivity.class);
+                }
+            }
+        };
+        registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
     public void createSignInIntent() {
@@ -99,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                             if(!audios.contains(word.toLowerCase()+".mp3")){
                                 download(word.toLowerCase());
                                 audios.add(word.toLowerCase()+".mp3");
+                                count++;
                             }
                         }
                     }
@@ -115,7 +145,10 @@ public class MainActivity extends AppCompatActivity {
                 });
                 ref.child("words").addListenerForSingleValueEvent(new ValueEventListener() {
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        startProfileActivity(CategoryActivity.class);
+                        checked = true;
+                        downtxt.setText("Downloading files 0/"+ count);
+                        if(count == 0)
+                            startProfileActivity(CategoryActivity.class);
                     }
 
                     @Override
@@ -139,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Log.d(TAG, "logged in failed");
                 Toast.makeText(MainActivity.this, "Sign in failed. Please Retry", Toast.LENGTH_SHORT).show();
-                createSignInIntent();
+//                createSignInIntent();
             }
         }
     }
@@ -163,13 +196,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void downloadfile(Context context, String filename, String fileext, String dst, String url) {
-        DownloadManager dmanager = (DownloadManager) getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 //        request.setDestinationInExternalFilesDir(context, "", filename + fileext);
         request.setDestinationInExternalPublicDir("/PMP-Audio", filename + fileext);
-        dmanager.enqueue(request);
+        ids.add(dmanager.enqueue(request));
     }
 
     private void checkPermission() {
@@ -196,6 +228,8 @@ public class MainActivity extends AppCompatActivity {
 //        String path = WordListActivity.this.getFilesDir().toString() + "/Download";
         Log.d("Files", "Path: " + path);
         File directory = new File(path);
+        if(!directory.exists())
+            directory.mkdir();
         File[] files = directory.listFiles();
         Log.d("Files", "Size: "+ files.length);
         for (int i = 0; i < files.length; i++) {
